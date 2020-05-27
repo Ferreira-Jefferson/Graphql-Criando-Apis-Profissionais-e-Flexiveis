@@ -8,7 +8,7 @@ const typeDefs = gql`
     nome: String!
     email: String!
     idade: Int
-    salario: Float
+    salario: Float #Nome que deve ser buscado na API
     vip: Boolean
   }
 
@@ -18,6 +18,9 @@ const typeDefs = gql`
   }
 `
 const resolvers = {
+  Usuario: {
+    salario: usuario => usuario.salario_real //Resolvendo campo com nome diferente
+  },
   Query: {
     horaAtual: () => new Date(),
     usuarioLogado: () => ({
@@ -25,7 +28,7 @@ const resolvers = {
       nome: "Jefferson",
       email: "jefferson@email.com",
       idade: 25,
-      salario: 123.45,
+      salario_real: 123.45, //Simulando: Campo com nome diferente no banco
       vip: true
     })
   }
