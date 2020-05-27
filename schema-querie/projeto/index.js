@@ -1,13 +1,16 @@
 const { ApolloServer, gql } = require('apollo-server')
 
 const typeDefs = gql`
+  scalar Date
+
   type Query {
-    horaAtual: String!
+    horaAtual: Date
   }
 `
+
 const resolvers = {
   Query: {
-    horaAtual: () => `${new Date().toTimeString()}`
+    horaAtual: () => new Date()
   }
 }
 
