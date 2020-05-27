@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const { importSchema } = require('graphql-import')
 
 const perfis_list = [{ id: "1", nome: "Comum" }, { id: "2", nome: "Administrador" }]
 
@@ -10,43 +11,9 @@ const users_list = [
   { id: "5", nome: "Marcos", email: "marcos@email.com", idade: 43, id_perfil: "1" }
 ];
 
-const typeDefs = gql`
-  fragment camposPadrao on Usuario {
-    id
-    nome
-    perfil {
-      id
-      nome
-    }
-  }
-
-  type Perfil {
-    id: ID!
-    nome: String!
-  }
-
-  type Usuario {
-    id:ID
-    nome:String!
-    email:String!
-    idade: Int!
-    perfil: Perfil
-  }
-
-
-
-  type Query {
-    usuario(id: ID): Usuario
-    usuarios: [Usuario!]
-
-    perfil(id: ID): Perfil
-    perfis: [Perfil!]
-  }
-`
-
 const resolvers = {
   Usuario: {
-    perfil: ({id}) => perfis_list.filter(perfil => perfil.id === id)[0]
+    perfil: ({id_perfil}) => perfis_list.filter(perfil => perfil.id === id_perfil)[0]
   },
 
   Query: {
@@ -58,7 +25,7 @@ const resolvers = {
 }
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: importSchema('./schema/index.graphql'),
   resolvers
 })
 

@@ -1,0 +1,14 @@
+#import Perfil from 'perfil.graphql'
+#import Usuario from 'usuario.graphql'
+#import Query from 'query.graphql'
+
+scalar Date
+
+fragment camposPadrao on Usuario {
+  id
+  nome
+  perfil {
+    id
+    nome
+  }
+}

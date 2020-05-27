@@ -1,0 +1,7 @@
+type Query {
+  usuario(id: ID): Usuario
+  usuarios: [Usuario!]
+
+  perfil(id: ID): Perfil
+  perfis: [Perfil!]
+}
