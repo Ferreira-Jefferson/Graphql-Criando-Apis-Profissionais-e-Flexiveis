@@ -11,6 +11,15 @@ const users_list = [
 ];
 
 const typeDefs = gql`
+  fragment camposPadrao on Usuario {
+    id
+    nome
+    perfil {
+      id
+      nome
+    }
+  }
+
   type Perfil {
     id: ID!
     nome: String!
