@@ -20,5 +20,18 @@ module.exports = {
   excluirUsuario(_, { id }) {
     const index = usuarios.findIndex(user => user.id === id)
     return usuarios.splice(index, index !== -1)[0]
+  },
+  alterarUsuario(_, { id, nome, email, idade }) {
+    const index = usuarios.findIndex(user => user.id === id);
+
+    if (index < 0) return null;
+
+    const userUpdated = {
+        ...usuarios[index],
+        nome, email, idade
+      }
+
+    usuarios.splice(index, 1, userUpdated);    
+    return userUpdated;   
   }
 }
