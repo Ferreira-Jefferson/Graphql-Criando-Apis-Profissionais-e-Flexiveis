@@ -1,62 +1,28 @@
 const { ApolloServer, gql } = require('apollo-server')
 
 const typeDefs = gql`
-  scalar Date
-
-  type Usuario {
+  type Carro {
     id: ID
     nome: String!
-    email: String!
-    idade: Int
-    salario: Float #Nome que deve ser buscado na API
-    vip: Boolean
-  }
-
-  type Produto {
-    id: ID
-    nome: String!
-    preco: Float!
-    desconto: Int
-    precoComDesconto: Float
+    marca: String!
+    ano: Int!
+    preco: Float
   }
 
   type Query {
-    horaAtual: Date!
-    usuarioLogado: Usuario
-    produtoEmDestaque: [Produto]
+    numerosMegaSena: [Int!]
+    carros: [Carro!]!
   }
 `
+
 const resolvers = {
-  Usuario: {
-    salario: usuario => usuario.salario_real //Resolvendo campo com nome diferente
-  },
-  Produto: {
-    precoComDesconto: produto => produto.desconto ?
-      (produto.preco * (1 - produto.desconto / 100)).toFixed(2)
-      : produto.preco
-  },
   Query: {
-    horaAtual: () => new Date(),
-    usuarioLogado: () => ({
-      id: 1,
-      nome: "Jefferson",
-      email: "jefferson@email.com",
-      idade: 25,
-      salario_real: 123.45, //Simulando: Campo com nome diferente no banco
-      vip: true
-    }),
-    produtoEmDestaque: () => [{
-        id: 1,
-        nome: "TV 29'",
-        preco: 1002.34,
-        desconto: 10
-      },
-      {
-        id: 1,
-        nome: "Notebook'",
-        preco: 2354.76
-      }]
-  } 
+    numerosMegaSena: () => new Array(6).fill().map(() => parseInt(Math.random() * 60 + 1)),
+    carros: () => [
+      { id: 1, nome: "IX 35", marca: "Hyundai", ano: 2019, preco: 89900.01},
+      { id: 2, nome: "Sportage", marca: "Kia", ano: 2015, preco: 64900.01}
+    ]
+  }
 }
 
 const server = new ApolloServer({
@@ -64,4 +30,4 @@ const server = new ApolloServer({
   resolvers
 })
 
-server.listen().then(({url}) => console.log(`Executando em ${url}`))
+server.listen().then(({url}) => console.log(`Run in ${url}`))
