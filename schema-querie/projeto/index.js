@@ -1,32 +1,42 @@
 const { ApolloServer, gql } = require('apollo-server')
 
-const car_list = [
-  { id: 1, nome: "IX 35", marca: "Hyundai", ano: 2019, preco: 89900.01 },
-  { id: 2, nome: "Sportage", marca: "Kia", ano: 2015, preco: 64900.01 },
-  { id: 3, nome: "XC40", marca: "Volvo", ano: 2018, preco: 169950.01 }
+const users_list = [
+  { id: "1", nome: "Ana", email: "ana@email.com", idade: 23 },
+  { id: "2", nome: "Maria", email: "maria@email.com", idade: 45 },
+  { id: "3", nome: "Pedro", email: "pedro@email.com", idade: 12 },
+  { id: "4", nome: "Lucia", email: "lucia@email.com", idade: 76 },
+  { id: "5", nome: "Marcos", email: "marcos@email.com", idade: 43 }
 ];
+const perfis_list = [{id: "1", nome: "Comum"}, {id: "2", nome: "Administrador"}]
 
 const typeDefs = gql`
-  type Carro {
-    id: ID
+  type Usuario {
+    id:ID
+    nome:String!
+    email:String!
+    idade: Int!
+  }
+
+  type Perfil {
+    id: ID!
     nome: String!
-    marca: String!
-    ano: Int!
-    preco: Float
   }
 
   type Query {
-    numerosMegaSena: [Int!]
-    carros: [Carro!]!
-    carro(id: ID): Carro
+    usuario(id: ID): Usuario
+    usuarios: [Usuario!]
+
+    perfil(id: ID): Perfil
+    perfis: [Perfil!]
   }
 `
 
 const resolvers = {
   Query: {
-    numerosMegaSena: () => new Array(6).fill().map(() => parseInt(Math.random() * 60 + 1)),
-    carros: () => car_list,
-    carro: (_, { id }) => car_list.filter(car => car.id == id)[0]
+    usuario: (_, { id }) => users_list.filter(user => user.id === id)[0],
+    usuarios: () => users_list,
+    perfil: (_, { id }) => perfis_list.filter(perfil => perfil.id === id)[0],
+    perfis: () => perfis_list,
   }
 }
 
