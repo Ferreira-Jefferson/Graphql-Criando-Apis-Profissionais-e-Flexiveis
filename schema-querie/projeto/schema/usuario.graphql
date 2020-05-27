@@ -1,7 +1,14 @@
+enum UsuarioStatus {
+    ATIVO
+    INATIVO
+    BLOQUEADO
+}
+
 type Usuario {
   id:ID
   nome:String!
   email:String!
   idade: Int!
   perfil: Perfil
+  status: UsuarioStatus
 }

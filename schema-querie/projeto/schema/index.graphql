@@ -9,6 +9,6 @@ fragment camposPadrao on Usuario {
   nome
   perfil {
     id
-    nome
+    nome 
   }
 }
