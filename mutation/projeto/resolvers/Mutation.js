@@ -1,9 +1,11 @@
 const { usuarios, IDGenerator } = require('../data/db')
 
 module.exports = {
-  novoUsuario(_, { nome, email, idade }) {
-    if (usuarios.some(user => user.email === email))
+  novoUsuario(_, { dados }) {
+    if (usuarios.some(user => user.email === dados.email))
       throw new Error("Usuário já cadastrados!")
+    
+    const { nome, email, idade } = dados;    
     
     const novoUsuario = {
       id: IDGenerator(),
