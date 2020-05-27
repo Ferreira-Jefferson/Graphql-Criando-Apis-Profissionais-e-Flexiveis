@@ -1,5 +1,5 @@
 type Mutation {
   novoUsuario(dados: UsuarioInput!): Usuario
-  excluirUsuario(id: Int): Usuario
+  excluirUsuario(filtro: Usuariofiltro): Usuario
   alterarUsuario(id: Int, nome: String, email: String, idade: Int): Usuario
 }
