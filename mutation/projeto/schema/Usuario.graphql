@@ -24,7 +24,7 @@ input UsuarioInput{
     idade: Int  
 }
 
-input Usuariofiltro {
+input UsuarioFiltro {
    id: Int
    email: String
 }

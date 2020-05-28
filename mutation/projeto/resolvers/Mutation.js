@@ -1,16 +1,5 @@
 const { usuarios, IDGenerator } = require('../data/db')
-
-function getIndex(filtro) {  
-  if (!filtro) return -1;
-
-  if (filtro.id)
-    return usuarios.findIndex(user => user.id === filtro.id)
-  
-  else if (filtro.email)
-    return usuarios.findIndex(user => user.email === filtro.email)
-  
-  return -1;
-}
+const { getIndex } = require('../helpers')
 
 module.exports = {
   novoUsuario(_, { dados }) {
@@ -35,8 +24,10 @@ module.exports = {
     const index = getIndex(filtro)
     return usuarios.splice(index, index !== -1)[0]
   },
-  alterarUsuario(_, { id, nome, email, idade }) {
-    const index = usuarios.findIndex(user => user.id === id);
+  alterarUsuario(_, { filtro, dados }) {
+    const index = getIndex(filtro);
+
+    const { nome, email, idade } = dados
 
     if (index < 0) return null;
 
