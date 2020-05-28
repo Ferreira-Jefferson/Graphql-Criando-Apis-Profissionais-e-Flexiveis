@@ -1,5 +1,5 @@
-const { usuarios, IDGenerator } = require('../../data/db')
-const { getIndex } = require('../../helpers')
+const { usuarios, IDGeneratorUser } = require('../../data/db')
+const { getIndexUser } = require('../../helpers')
 
 module.exports = {
   novoUsuario(_, { dados }) {
@@ -9,7 +9,7 @@ module.exports = {
     const { nome, email, idade } = dados;    
     
     const novoUsuario = {
-      id: IDGenerator(),
+      id: IDGeneratorUser(),
       nome,
       email,
       idade,
@@ -21,11 +21,11 @@ module.exports = {
     return novoUsuario;
   },
   excluirUsuario(_, { filtro }) {
-    const index = getIndex(filtro)
+    const index = getIndexUser(filtro)
     return usuarios.splice(index, index !== -1)[0]
   },
   alterarUsuario(_, { filtro, dados }) {
-    const index = getIndex(filtro);
+    const index = getIndexUser(filtro);
 
     const { nome, email, idade } = dados
 
@@ -35,8 +35,8 @@ module.exports = {
         ...usuarios[index],
         nome, email, idade
       }
-
-    usuarios.splice(index, 1, userUpdated);    
+    usuarios.splice(index, 1, userUpdated);   
+    
     return userUpdated;   
   }
 }
