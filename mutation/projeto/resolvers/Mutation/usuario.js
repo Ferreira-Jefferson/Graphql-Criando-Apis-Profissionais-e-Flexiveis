@@ -1,5 +1,5 @@
-const { usuarios, IDGenerator } = require('../data/db')
-const { getIndex } = require('../helpers')
+const { usuarios, IDGenerator } = require('../../data/db')
+const { getIndex } = require('../../helpers')
 
 module.exports = {
   novoUsuario(_, { dados }) {
