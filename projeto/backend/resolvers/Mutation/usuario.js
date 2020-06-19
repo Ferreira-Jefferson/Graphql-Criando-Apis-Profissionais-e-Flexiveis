@@ -1,18 +1,41 @@
+const bcrypt = require('bcrypt-nodejs')
 const db = require('../../config/db')
+
 const { perfil: obterPerfil } = require('../Query/perfil')
 const { usuario: obterUsuario } = require('../Query/usuario')
 
-module.exports = {
+const mutations = {
+    registrarUsuario(_, { dados }) {
+        try {
+            const { nome, email, senha } = dados;
+            return mutations.novoUsuario(_, {
+                dados: {
+                    nome,
+                    email,
+                    senha
+                }
+            })
+        } catch (e) {
+            throw new Error(e.sqlMessage)
+        }
+    },
     async novoUsuario(_, { dados }) {
         try {
             const idsPerfis = []
-            if(dados.perfis) {
-                for(let filtro of dados.perfis) {
-                    const perfil = await obterPerfil(_, {
-                        filtro
-                    })
-                    if(perfil) idsPerfis.push(perfil.id)
-                }
+
+            if(!dados.perfis || !dados.perfis.length) {
+                dados.perfis = [{ nome: "comum" }];
+            }
+            for(let filtro of dados.perfis) {
+                const perfil = await obterPerfil(_, {
+                    filtro
+                })
+                if(perfil) idsPerfis.push(perfil.id)
+            }
+            // criptografar a senha
+            if (dados.senha) {
+                const salt = bcrypt.genSaltSync();
+                dados.senha = bcrypt.hashSync(dados.senha, salt);
             }
 
             delete dados.perfis
@@ -26,8 +49,8 @@ module.exports = {
 
             return db('usuarios')
                 .where({ id }).first()
-        } catch(e) {
-            throw new Error(e.sqlMessage)
+        } catch (e) {
+            throw new Error(e.sqlMessage || e.message)
         }
     },
     async excluirUsuario(_, args) {
@@ -70,6 +93,12 @@ module.exports = {
                     }
                 }
 
+                // criptografar senha
+                if (dados.senha) {
+                    const salt = bcrypt.genSaltSync();
+                    dados.senha = bcrypt.hashSync(dados.senha, salt);
+                }
+
                 delete dados.perfis
                 await db('usuarios')
                     .where({ id })
@@ -81,3 +110,5 @@ module.exports = {
         }
     }
 }
+
+module.exports = mutations;
