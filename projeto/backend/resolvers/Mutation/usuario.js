@@ -61,7 +61,7 @@ const mutations = {
                 await db('usuarios_perfis')
                     .where({ usuario_id: id }).delete()
                 await db('usuarios')
-                    .where({ id }).delete()
+                    .where({ id }).delete() 
             }
             return usuario
         } catch(e) {
