@@ -1,3 +1,6 @@
-module.exports = ({ req }) => {  
-  const auth = req.headers.authorization 
+module.exports = async ({ req }) => {  
+  //Only in development
+  await require('./simularUsuarioLogado')(req);
+
+  const auth = req.headers.authorization;
 }
