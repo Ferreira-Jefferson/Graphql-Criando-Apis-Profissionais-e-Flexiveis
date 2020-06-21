@@ -16,10 +16,13 @@ module.exports = {
         
         return getUsuarioLogado(usuario);
     },
-    usuarios() {
+    usuarios(_, __,  context) {
+        context && context.validarAdmin();
         return db('usuarios')
     },
-    usuario(_, { filtro }) {
+    usuario(_, { filtro }, context) {
+        context && context.validarUsuarioLogado(filtro);
+
         if(!filtro) return null
         const { id, email } = filtro
         if(id) {
