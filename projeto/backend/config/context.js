@@ -31,7 +31,7 @@ module.exports = async ({ req }) => {
     validarUsuario: () => { if (!usuario) throw err; },
     validarAdmin: () => { if (!admin) throw err; },
     validarUsuarioFiltro: filtro => {
-      if (!admin) return;
+      if (admin) return;
 
       if (!usuario || !filtro) throw err;
       

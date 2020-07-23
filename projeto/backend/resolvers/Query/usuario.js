@@ -21,7 +21,7 @@ module.exports = {
         return db('usuarios')
     },
     usuario(_, { filtro }, context) {
-        context && context.validarUsuarioLogado(filtro);
+        context && context.validarUsuarioFiltro(filtro);
 
         if(!filtro) return null
         const { id, email } = filtro
